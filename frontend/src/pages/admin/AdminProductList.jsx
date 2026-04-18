@@ -13,7 +13,7 @@ const AdminProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/products");
+      const res = await fetch("https://shreeramgeneralstore.onrender.com/api/products");
       if (!res.ok) throw new Error("Failed to fetch products");
       const data = await res.json();
       setProducts(data);
@@ -32,7 +32,7 @@ const AdminProductList = () => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+        const res = await fetch(`https://shreeramgeneralstore.onrender.com/api/products/${id}`, {
           method: "DELETE",
           headers: {
             "Authorization": `Bearer ${token}`

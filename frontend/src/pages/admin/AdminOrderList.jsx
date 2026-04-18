@@ -13,7 +13,7 @@ const AdminOrderList = () => {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/orders", {
+      const res = await fetch("https://shreeramgeneralstore.onrender.com/api/orders", {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to fetch orders");
@@ -33,7 +33,7 @@ const AdminOrderList = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      const res = await fetch(`https://shreeramgeneralstore.onrender.com/api/orders/${orderId}/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

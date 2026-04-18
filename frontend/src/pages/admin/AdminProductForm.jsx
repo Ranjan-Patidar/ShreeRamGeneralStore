@@ -38,7 +38,7 @@ const AdminProductForm = () => {
     if (id) {
       const fetchProduct = async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/products/${id}`);
+          const res = await fetch(`https://shreeramgeneralstore.onrender.com/api/products/${id}`);
           if (!res.ok) throw new Error("Product not found");
           const data = await res.json();
           setFormData({
@@ -90,8 +90,8 @@ const AdminProductForm = () => {
     try {
       const token = localStorage.getItem("token");
       const url = id
-        ? `http://localhost:5000/api/products/${id}`
-        : `http://localhost:5000/api/products`;
+        ? `https://shreeramgeneralstore.onrender.com/api/products/${id}`
+        : `https://shreeramgeneralstore.onrender.com/api/products`;
       const method = id ? "PUT" : "POST";
 
       const res = await fetch(url, {

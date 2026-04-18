@@ -18,7 +18,7 @@ const AdminUsersList = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/auth/users", {
+        const res = await fetch("https://shreeramgeneralstore.onrender.com/api/auth/users", {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -42,11 +42,11 @@ const AdminUsersList = () => {
       alert("Cannot delete an admin user from here.");
       return;
     }
-    
+
     if (window.confirm(`Are you sure you want to delete user ${userName}? This action cannot be undone.`)) {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/auth/users/${userId}`, {
+        const res = await fetch(`https://shreeramgeneralstore.onrender.com/api/auth/users/${userId}`, {
           method: "DELETE",
           headers: {
             "Authorization": `Bearer ${token}`
@@ -87,7 +87,7 @@ const AdminUsersList = () => {
   const handleSaveEdit = async (userId) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/auth/users/${userId}`, {
+      const res = await fetch(`https://shreeramgeneralstore.onrender.com/api/auth/users/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -160,31 +160,31 @@ const AdminUsersList = () => {
                 <tr key={user._id} style={{ borderBottom: "1px solid #374151" }}>
                   <td style={{ padding: "12px", border: "1px solid #374151", fontWeight: "bold" }}>
                     {editingUser === user._id ? (
-                      <input 
-                        type="text" 
-                        name="name" 
-                        value={editFormData.name} 
-                        onChange={handleEditChange} 
+                      <input
+                        type="text"
+                        name="name"
+                        value={editFormData.name}
+                        onChange={handleEditChange}
                         style={{ width: "100%", padding: "5px", background: "#111827", color: "white", border: "1px solid #374151", borderRadius: "3px" }}
                       />
                     ) : user.name}
                   </td>
                   <td style={{ padding: "12px", border: "1px solid #374151" }}>
                     {editingUser === user._id ? (
-                      <input 
-                        type="email" 
-                        name="email" 
-                        value={editFormData.email} 
-                        onChange={handleEditChange} 
+                      <input
+                        type="email"
+                        name="email"
+                        value={editFormData.email}
+                        onChange={handleEditChange}
                         style={{ width: "100%", padding: "5px", background: "#111827", color: "white", border: "1px solid #374151", borderRadius: "3px" }}
                       />
                     ) : user.email}
                   </td>
                   <td style={{ padding: "12px", border: "1px solid #374151" }}>
                     {editingUser === user._id ? (
-                      <select 
-                        name="role" 
-                        value={editFormData.role} 
+                      <select
+                        name="role"
+                        value={editFormData.role}
                         onChange={handleEditChange}
                         style={{ width: "100%", padding: "5px", background: "#111827", color: "white", border: "1px solid #374151", borderRadius: "3px" }}
                       >
@@ -192,9 +192,9 @@ const AdminUsersList = () => {
                         <option value="admin">admin</option>
                       </select>
                     ) : (
-                      <span style={{ 
-                        padding: "4px 8px", 
-                        borderRadius: "12px", 
+                      <span style={{
+                        padding: "4px 8px",
+                        borderRadius: "12px",
                         fontSize: "0.85rem",
                         background: user.role === 'admin' ? '#f59e0b' : '#3b82f6',
                         color: user.role === 'admin' ? '#000' : '#fff'
@@ -215,14 +215,14 @@ const AdminUsersList = () => {
                   <td style={{ padding: "12px", border: "1px solid #374151", textAlign: "center" }}>
                     {editingUser === user._id ? (
                       <div style={{ display: "flex", gap: "5px", justifyContent: "center" }}>
-                        <button 
+                        <button
                           onClick={() => handleSaveEdit(user._id)}
                           style={{ background: "#10b981", color: "white", border: "none", padding: "6px", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" }}
                           title="Save"
                         >
                           ✅
                         </button>
-                        <button 
+                        <button
                           onClick={handleCancelEdit}
                           style={{ background: "#6b7280", color: "white", border: "none", padding: "6px", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" }}
                           title="Cancel"
@@ -232,14 +232,14 @@ const AdminUsersList = () => {
                       </div>
                     ) : (
                       <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                        <button 
+                        <button
                           onClick={() => handleEditClick(user)}
                           style={{ background: "#3b82f6", color: "white", border: "none", padding: "6px 12px", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" }}
                           title="Edit User"
                         >
                           ✏️
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleDeleteUser(user._id, user.name, user.role)}
                           style={{
                             background: user.role === 'admin' ? "#4b5563" : "#ef4444",
