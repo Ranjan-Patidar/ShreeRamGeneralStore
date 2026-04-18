@@ -32,16 +32,8 @@ const app = express();
 // ==============================
 
 // Enable CORS — allows frontend (localhost:5173) to call this backend
-// app.use(cors({
-//   origin: [
-//     "http://localhost:5173",
-//     "http://localhost:3000",
-//     "https://shree-ram-general-store-vuts.vercel.app"
-//   ],
-//   credentials: true,
-// }));
 app.use(cors({
-  origin: true,
+  origin: true,   // allow all origins (Vercel + localhost)
   credentials: true,
 }));
 
