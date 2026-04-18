@@ -9,8 +9,8 @@ import axios from "axios";
 
 // Create a custom axios instance with our backend base URL
 const API = axios.create({
-  baseURL: "https://shreeramgeneralstore.onrender.com/api", // Backend server URL
-  withCredentials: true,
+  baseURL: "https://shreeramgeneralstore.onrender.com", // Backend server URL
+  // withCredentials: true,
 });
 
 // ==============================
