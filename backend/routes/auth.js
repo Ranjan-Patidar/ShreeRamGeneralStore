@@ -4,7 +4,7 @@
 // ==============================
 
 const express = require("express");
-const router = express.Router(); // Creates a mini "sub-app" for these routes
+const router = express.Router();
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Order = require("../models/Order");
@@ -15,10 +15,13 @@ const { protect, admin } = require("../middleware/authMiddleware");
 // The token expires in 30 days
 // ==============================
 const generateToken = (userId) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET environment variable is not set");
+  }
   return jwt.sign(
-    { id: userId },            // Payload: stores user's ID
-    process.env.JWT_SECRET,    // Secret key from .env file
-    { expiresIn: "30d" }       // Token expires in 30 days
+    { id: userId },
+    process.env.JWT_SECRET,
+    { expiresIn: "30d" }
   );
 };
 
@@ -29,11 +32,17 @@ const generateToken = (userId) => {
 // ==============================
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password, phone } = req.body;
+    const { name, password, phone } = req.body;
+    const email = req.body.email?.trim()?.toLowerCase();
 
     // Validate: all required fields must be present
     if (!name || !email || !password) {
       return res.status(400).json({ message: "Please fill all required fields" });
+    }
+
+    // Validate password length
+    if (password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
     }
 
     // Check if a user with this email already exists
@@ -47,7 +56,7 @@ router.post("/register", async (req, res) => {
     const user = await User.create({
       name,
       email,
-      password, // will be hashed before saving
+      password,
       phone: phone || "",
     });
 
@@ -65,6 +74,9 @@ router.post("/register", async (req, res) => {
     });
   } catch (error) {
     console.error("Register error:", error.message);
+    if (error.message.includes("JWT_SECRET")) {
+      return res.status(500).json({ message: "Server configuration error: JWT_SECRET not set" });
+    }
     res.status(500).json({ message: "Server error during registration" });
   }
 });
@@ -76,7 +88,8 @@ router.post("/register", async (req, res) => {
 // ==============================
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { password } = req.body;
+    const email = req.body.email?.trim()?.toLowerCase();
 
     // Validate fields
     if (!email || !password) {
@@ -110,6 +123,9 @@ router.post("/login", async (req, res) => {
     });
   } catch (error) {
     console.error("Login error:", error.message);
+    if (error.message.includes("JWT_SECRET")) {
+      return res.status(500).json({ message: "Server configuration error: JWT_SECRET not set" });
+    }
     res.status(500).json({ message: "Server error during login" });
   }
 });
@@ -140,13 +156,10 @@ router.post("/make-admin", async (req, res) => {
 // ==============================
 router.get("/users", protect, admin, async (req, res) => {
   try {
-    // Get all users, converting to plain JS objects for easy manipulation
     const users = await User.find({}).select("-password").sort({ createdAt: -1 }).lean();
 
-    // Aggregate orders to get total orders and total spent per user
     const orderStats = await Order.aggregate([
       {
-        // Don't count cancelled orders towards spend if desired, but let's count all non-cancelled
         $match: { orderStatus: { $ne: "Cancelled" } }
       },
       {
@@ -158,7 +171,6 @@ router.get("/users", protect, admin, async (req, res) => {
       }
     ]);
 
-    // Map order stats back to users array
     const usersWithStats = users.map(user => {
       const stats = orderStats.find(s => s._id && s._id.toString() === user._id.toString());
       return {
@@ -185,9 +197,6 @@ router.delete("/users/:id", protect, admin, async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    
-    // Optionally: check if this is the last admin to prevent self-lockout
-    // if (user.role === 'admin') ...
 
     await User.findByIdAndDelete(req.params.id);
     res.json({ message: "User deleted successfully" });

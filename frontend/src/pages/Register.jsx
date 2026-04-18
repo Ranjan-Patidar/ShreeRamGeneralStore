@@ -50,7 +50,12 @@ const Register = () => {
       setSuccess(result.message || "Account created! Redirecting...");
       setTimeout(() => navigate("/"), 1500); // redirect after 1.5s
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed. Try again.");
+      // setError(err.response?.data?.message || "Registration failed. Try again.");
+      const msg = err.response?.data?.message || "Registration failed. Try again.";
+      setError(msg);
+      if (msg.toLowerCase().includes("already registered")) {
+        setTimeout(() => navigate("/login"), 2000);
+      }
     } finally {
       setLoading(false);
     }

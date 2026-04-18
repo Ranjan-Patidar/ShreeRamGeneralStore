@@ -11,6 +11,15 @@ require('dns').setDefaultResultOrder('ipv4first');
 // Variables like MONGO_URI and JWT_SECRET are stored there
 require("dotenv").config();
 
+// Fail fast if required environment variables are missing
+const REQUIRED_ENV = ["MONGO_URI", "JWT_SECRET"];
+const missingEnv = REQUIRED_ENV.filter((key) => !process.env[key]);
+if (missingEnv.length > 0) {
+  console.error("❌ Missing required environment variables:", missingEnv.join(", "));
+  console.error("   Set them in your .env file (local) or Render dashboard (production).");
+  process.exit(1);
+}
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
