@@ -33,7 +33,8 @@ const Login = () => {
     setLoading(true);
 
     try {
-      await login(email, password);
+      // await login(email, password);
+      await login(email.trim(), password);
       navigate(from, { replace: true }); // redirect after login
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Check your credentials.");

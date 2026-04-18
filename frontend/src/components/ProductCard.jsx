@@ -123,27 +123,31 @@ const ProductCard = ({ product, wishlistIds = [], onWishlistToggle }) => {
           {/* Product name */}
           <h3 className="product-name">{product.name}</h3>
 
-          {/* Brand */}
-          <p className="product-brand">by {product.brand}</p>
+          <div className="product-brand-rating-row">
+            {/* Brand */}
+            <p className="product-brand">by {product.brand}</p>
 
-          {/* Rating */}
-          <div className="product-rating">
-            <span className="stars">{renderStars(product.rating)}</span>
-            <span className="rating-count">({product.numReviews})</span>
+            {/* Rating */}
+            <div className="product-rating">
+              <span className="stars">{renderStars(product.rating)}</span>
+              <span className="rating-count">({product.numReviews})</span>
+            </div>
           </div>
 
           {/* Price */}
-          <div className="product-price-row">
-            <span className="product-price">₹{product.price}</span>
-            {product.originalPrice > product.price && (
-              <span className="product-original-price">₹{product.originalPrice}</span>
-            )}
-          </div>
+          <div className="product-brand-rating-row">
+            <div className="product-price-row">
+              <span className="product-price">₹{product.price}</span>
+              {product.originalPrice > product.price && (
+                <span className="product-original-price">₹{product.originalPrice}</span>
+              )}
+            </div>
 
-          {/* Stock status */}
-          <span className={`stock-badge ${product.stock > 0 ? "in-stock" : "out-of-stock"}`}>
-            {product.stock > 0 ? `✅ In Stock (${product.stock})` : "❌ Out of Stock"}
-          </span>
+            {/* Stock status */}
+            <span className={`stock-badge ${product.stock > 0 ? "in-stock" : "out-of-stock"}`}>
+              {product.stock > 0 ? `✅ In Stock (${product.stock} Pieces)` : "❌ Out of Stock"}
+            </span>
+          </div>
         </div>
       </Link>
 

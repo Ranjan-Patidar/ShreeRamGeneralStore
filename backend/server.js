@@ -12,7 +12,7 @@ require('dns').setDefaultResultOrder('ipv4first');
 require("dotenv").config();
 
 // Fail fast if required environment variables are missing
-const REQUIRED_ENV = ["MONGO_URI", "JWT_SECRET"];
+const REQUIRED_ENV = ["MONGO_URI", "JWT_SECRET", "ADMIN_SECRET"];
 const missingEnv = REQUIRED_ENV.filter((key) => !process.env[key]);
 if (missingEnv.length > 0) {
   console.error("❌ Missing required environment variables:", missingEnv.join(", "));

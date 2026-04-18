@@ -1953,6 +1953,16 @@ ul {
   line-height: 1.3;
 }
 
+.product-brand-rating-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* or flex-start if you want them close */
+  gap: 10px;
+  flex-wrap: wrap;
+  /* optional for mobile */
+}
+
 .product-brand {
   font-size: 0.78rem;
   color: var(--text-muted);
