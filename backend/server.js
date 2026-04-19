@@ -57,7 +57,13 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected Successfully!"))
-  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
+  .catch((err) => {
+    console.error("❌ MongoDB Connection Error:", err.message);
+    console.error("   Check: 1) MONGO_URI env var on Render  2) Atlas IP Whitelist (add 0.0.0.0/0)  3) Cluster is not paused");
+  });
+
+mongoose.connection.on("disconnected", () => console.warn("⚠️  MongoDB disconnected"));
+mongoose.connection.on("reconnected", () => console.log("✅ MongoDB reconnected"));
 
 // ==============================
 // API ROUTES
@@ -81,6 +87,19 @@ app.use("/api/orders", orderRoutes);
 
 // 💳 Payment: /api/payment
 app.use("/api/payment", paymentRoutes);
+
+// ==============================
+// HEALTH CHECK — shows DB connection state
+// ==============================
+app.get("/api/health", (req, res) => {
+  const dbState = mongoose.connection.readyState;
+  const states = { 0: "disconnected", 1: "connected", 2: "connecting", 3: "disconnecting" };
+  res.json({
+    server: "running",
+    database: states[dbState] || "unknown",
+    dbStateCode: dbState,
+  });
+});
 
 // ==============================
 // ROOT ROUTE — Health check

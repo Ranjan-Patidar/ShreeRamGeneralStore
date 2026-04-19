@@ -33,12 +33,12 @@ router.get("/", async (req, res) => {
     }
 
     // Find products matching the filter, sorted by newest first
-    const products = await Product.find(filter).sort({ createdAt: -1 });
+    const products = await Product.find(filter).lean().sort({ _id: -1 });
 
     res.json(products);
   } catch (error) {
-    console.error("Get products error:", error.message);
-    res.status(500).json({ message: "Error fetching products" });
+    console.error("Get products error:", error.name, "-", error.message);
+    res.status(500).json({ message: "Error fetching products", error: error.message });
   }
 });
 
