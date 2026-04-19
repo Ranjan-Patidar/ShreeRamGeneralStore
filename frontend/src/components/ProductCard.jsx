@@ -109,9 +109,9 @@ const ProductCard = ({ product, wishlistIds = [], onWishlistToggle }) => {
       <Link to={`/product/${product._id}`} className="product-card-link">
         <div className="product-emoji-container">
           {(product.image && (product.image.startsWith('http') || product.image.startsWith('data:image'))) ? (
-            <img src={product.image} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "10px" }} />
+            <img src={product.image} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           ) : (
-            <span className="product-emoji">{product.emoji}</span>
+            <span className="product-emoji">{product.emoji || "🛍️"}</span>
           )}
         </div>
 

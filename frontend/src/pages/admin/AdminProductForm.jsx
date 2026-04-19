@@ -3,7 +3,7 @@
 // Form to Create or Edit a Product
 // ==============================
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 
@@ -28,6 +28,8 @@ const AdminProductForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const galleryInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
 
   const categories = [
     "Footwear", "Stationery", "Cosmetics", "Beauty Products",
@@ -146,16 +148,61 @@ const AdminProductForm = () => {
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "15px", marginBottom: "15px" }}>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label>Product Image</label>
-            <input type="file" accept="image/*" onChange={handleImageChange} style={{ width: "100%", padding: "10px", borderRadius: "5px", border: "1px solid #374151", background: "#1f2937", color: "white" }} />
-            {formData.image && <img src={formData.image} alt="Preview" style={{ marginTop: "10px", maxHeight: "100px", borderRadius: "5px" }} />}
+        <div className="form-group" style={{ marginBottom: "15px" }}>
+          <label>Product Image</label>
+
+          {/* Hidden file inputs */}
+          <input
+            ref={galleryInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: "none" }}
+          />
+          <input
+            ref={cameraInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleImageChange}
+            style={{ display: "none" }}
+          />
+
+          {/* Buttons to trigger each input */}
+          <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+            <button
+              type="button"
+              onClick={() => galleryInputRef.current.click()}
+              style={{ flex: 1, padding: "10px", borderRadius: "5px", border: "1px solid #374151", background: "#1f2937", color: "white", cursor: "pointer", fontSize: "0.9rem" }}
+            >
+              📁 Choose from Gallery
+            </button>
+            <button
+              type="button"
+              onClick={() => cameraInputRef.current.click()}
+              style={{ flex: 1, padding: "10px", borderRadius: "5px", border: "1px solid #374151", background: "#1f2937", color: "white", cursor: "pointer", fontSize: "0.9rem" }}
+            >
+              📷 Take Photo
+            </button>
           </div>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label>Emoji Icon (Fallback)</label>
-            <input type="text" name="emoji" value={formData.emoji} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "5px", border: "1px solid #374151", background: "#1f2937", color: "white" }} />
-          </div>
+
+          {/* Image preview */}
+          {formData.image && (
+            <div style={{ marginTop: "12px", position: "relative", display: "inline-block" }}>
+              <img
+                src={formData.image}
+                alt="Preview"
+                style={{ height: "120px", width: "120px", objectFit: "cover", borderRadius: "8px", border: "1px solid #374151" }}
+              />
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, image: "" }))}
+                style={{ position: "absolute", top: "-8px", right: "-8px", background: "#ef4444", border: "none", borderRadius: "50%", width: "22px", height: "22px", color: "white", cursor: "pointer", fontSize: "0.75rem", display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                ✕
+              </button>
+            </div>
+          )}
         </div>
 
         <div style={{ display: "flex", gap: "15px", marginBottom: "15px" }}>
