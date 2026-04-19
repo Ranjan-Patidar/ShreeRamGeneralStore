@@ -1383,7 +1383,7 @@ ul {
   outline: none;
   color: var(--text-primary);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.7rem;
 }
 
 .hero-search-input::placeholder {
@@ -1845,6 +1845,12 @@ ul {
   color: #fff;
   font-weight: 600;
   box-shadow: 0 2px 10px var(--primary-glow);
+}
+
+/* Double-class selector beats single — ensures active tab text is always white */
+.category-tab.category-tab-active {
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
 }
 
 /* ================================================
@@ -3497,6 +3503,132 @@ ul {
 }
 [data-theme="light"] ::-webkit-scrollbar-thumb {
   background: var(--primary);
+}
+
+/* Category tabs — explicit overrides for light mode */
+[data-theme="light"] .category-tab {
+  color: var(--text-secondary);
+  border-color: var(--border);
+  background: transparent;
+}
+[data-theme="light"] .category-tab:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+[data-theme="light"] .category-tab-active,
+[data-theme="light"] .category-tab.category-tab-active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+}
+
+/* Auth error/success — fix hardcoded light colors invisible on light bg */
+[data-theme="light"] .auth-error {
+  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(185, 28, 28, 0.3);
+}
+[data-theme="light"] .auth-success {
+  color: #065f46;
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(6, 95, 70, 0.3);
+}
+
+/* Sort select options background in light mode */
+[data-theme="light"] .sort-select {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+[data-theme="light"] .sort-select option {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+/* Products page title and count in light mode */
+[data-theme="light"] .products-title {
+  color: var(--text-primary);
+}
+[data-theme="light"] .products-count {
+  color: var(--text-secondary);
+}
+
+/* Section subtitle text in light mode */
+[data-theme="light"] .section-subtitle {
+  color: var(--text-secondary);
+}
+
+/* Product detail text in light mode */
+[data-theme="light"] .detail-name {
+  color: var(--text-primary);
+}
+[data-theme="light"] .detail-brand {
+  color: var(--text-secondary);
+}
+[data-theme="light"] .detail-description {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+[data-theme="light"] .detail-description h3,
+[data-theme="light"] .detail-description p {
+  color: var(--text-secondary);
+}
+
+/* Hero text contrast in light mode */
+[data-theme="light"] .hero-title {
+  color: var(--text-primary);
+}
+[data-theme="light"] .hero-subtitle {
+  color: var(--text-secondary);
+}
+[data-theme="light"] .hero-subtitle strong {
+  color: var(--text-primary);
+}
+
+/* Why section cards text in light mode */
+[data-theme="light"] .why-card h3 {
+  color: var(--text-primary);
+}
+[data-theme="light"] .why-card p {
+  color: var(--text-secondary);
+}
+
+/* Floating cards in hero light mode */
+[data-theme="light"] .floating-card {
+  background: var(--bg-card);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+/* Search box and input in light mode */
+[data-theme="light"] .search-box {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+[data-theme="light"] .search-input {
+  color: var(--text-primary);
+}
+[data-theme="light"] .search-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Rating text, review count in light mode */
+[data-theme="light"] .rating-text {
+  color: var(--text-primary);
+}
+[data-theme="light"] .review-count {
+  color: var(--text-muted);
+}
+
+/* Breadcrumb in light mode */
+[data-theme="light"] .breadcrumb {
+  color: var(--text-muted);
+}
+[data-theme="light"] .breadcrumb a {
+  color: var(--text-secondary);
+}
+[data-theme="light"] .breadcrumb a:hover {
+  color: var(--primary);
 }
 
 /* ================================================
