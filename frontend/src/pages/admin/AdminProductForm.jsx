@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import API from "../../api/axios";
 
 const AdminProductForm = () => {
   const { id } = useParams(); // If id exists, we are editing. Otherwise creating.
@@ -38,9 +39,7 @@ const AdminProductForm = () => {
     if (id) {
       const fetchProduct = async () => {
         try {
-          const res = await fetch(`https://shreeramgeneralstore.onrender.com/api/products/${id}`);
-          if (!res.ok) throw new Error("Product not found");
-          const data = await res.json();
+          const { data } = await API.get(`/products/${id}`);
           setFormData({
             name: data.name,
             price: data.price,
@@ -56,7 +55,7 @@ const AdminProductForm = () => {
             isNewArrival: data.isNewArrival || false,
           });
         } catch (err) {
-          setError(err.message);
+          setError(err.response?.data?.message || err.message || "Product not found");
         }
       };
       fetchProduct();
@@ -88,28 +87,14 @@ const AdminProductForm = () => {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
-      const url = id
-        ? `https://shreeramgeneralstore.onrender.com/api/products/${id}`
-        : `https://shreeramgeneralstore.onrender.com/api/products`;
-      const method = id ? "PUT" : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Something went wrong");
-
-      // Go back to product list
+      if (id) {
+        await API.put(`/products/${id}`, formData);
+      } else {
+        await API.post("/products", formData);
+      }
       navigate("/admin/products");
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message || "Something went wrong");
       setLoading(false);
     }
   };

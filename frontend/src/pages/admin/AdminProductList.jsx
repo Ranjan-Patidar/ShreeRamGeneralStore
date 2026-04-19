@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import API from "../../api/axios";
 
 const AdminProductList = () => {
   const [products, setProducts] = useState([]);
@@ -13,12 +14,10 @@ const AdminProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://shreeramgeneralstore.onrender.com/api/products");
-      if (!res.ok) throw new Error("Failed to fetch products");
-      const data = await res.json();
+      const { data } = await API.get("/products");
       setProducts(data);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message || "Failed to fetch products");
     } finally {
       setLoading(false);
     }
@@ -31,23 +30,10 @@ const AdminProductList = () => {
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(`https://shreeramgeneralstore.onrender.com/api/products/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
-        });
-        
-        if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.message || "Failed to delete");
-        }
-        
-        // Remove from UI
+        await API.delete(`/products/${id}`);
         setProducts(products.filter(p => p._id !== id));
       } catch (err) {
-        alert(err.message);
+        alert(err.response?.data?.message || err.message || "Failed to delete");
       }
     }
   };
