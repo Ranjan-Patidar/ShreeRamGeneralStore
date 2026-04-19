@@ -178,10 +178,6 @@ const AdminProductForm = () => {
             <label>Brand</label>
             <input type="text" name="brand" value={formData.brand} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "5px", border: "1px solid #374151", background: "#1f2937", color: "white" }} />
           </div>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label>Card Color (Hex)</label>
-            <input type="text" name="cardColor" value={formData.cardColor} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "5px", border: "1px solid #374151", background: "#1f2937", color: "white" }} />
-          </div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "15px", marginBottom: "15px", background: "#1f2937", padding: "15px", borderRadius: "5px", border: "1px solid #374151" }}>

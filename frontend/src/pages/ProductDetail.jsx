@@ -142,7 +142,7 @@ const ProductDetail = () => {
 
       <div className="detail-container">
         {/* ---- Left: Product Visual ---- */}
-        <div className="detail-visual" style={{ background: product.image ? "var(--bg-card)" : product.cardColor }}>
+        <div className="detail-visual">
           {product.image && (product.image.startsWith("http") || product.image.startsWith("data:image")) ? (
             <img
               src={product.image}

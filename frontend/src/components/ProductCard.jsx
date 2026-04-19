@@ -85,7 +85,7 @@ const ProductCard = ({ product, wishlistIds = [], onWishlistToggle }) => {
   };
 
   return (
-    <div className="product-card" style={{ "--card-color": product.cardColor }}>
+    <div className="product-card">
 
       {/* Toast notification */}
       {toastMsg && <div className="card-toast">{toastMsg}</div>}
