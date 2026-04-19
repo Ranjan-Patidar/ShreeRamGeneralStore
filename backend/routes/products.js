@@ -7,6 +7,7 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/Product");
+const mongoose = require("mongoose");
 
 // ==============================
 // GET /api/products
@@ -16,28 +17,28 @@ const Product = require("../models/Product");
 // ==============================
 router.get("/", async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      console.error("DB not ready, readyState:", mongoose.connection.readyState);
+      return res.status(503).json({ message: "Database not connected", readyState: mongoose.connection.readyState });
+    }
+
     const { category, search } = req.query;
 
-    // Build filter object based on query params
     let filter = {};
 
-    // Filter by category if provided
     if (category && category !== "All") {
       filter.category = category;
     }
 
-    // Search by name if search query is provided
     if (search) {
-      // 'i' flag means case-insensitive search
       filter.name = { $regex: search, $options: "i" };
     }
 
-    // Find products matching the filter, sorted by newest first
-    const products = await Product.find(filter).lean().sort({ _id: -1 });
+    const products = await Product.find(filter).sort({ _id: -1 }).lean();
 
     res.json(products);
   } catch (error) {
-    console.error("Get products error:", error.name, "-", error.message);
+    console.error("Get products error:", error.name, "-", error.message, error.stack);
     res.status(500).json({ message: "Error fetching products", error: error.message });
   }
 });

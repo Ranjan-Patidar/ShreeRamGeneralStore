@@ -55,13 +55,18 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 // Connects to MongoDB Atlas using the URI from .env
 // ==============================
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 45000,
+    maxPoolSize: 10,
+    retryWrites: true,
+  })
   .then(() => console.log("✅ MongoDB Connected Successfully!"))
   .catch((err) => {
     console.error("❌ MongoDB Connection Error:", err.message);
-    console.error("   Check: 1) MONGO_URI env var on Render  2) Atlas IP Whitelist (add 0.0.0.0/0)  3) Cluster is not paused");
   });
 
+mongoose.connection.on("error", (err) => console.error("❌ MongoDB error:", err.message));
 mongoose.connection.on("disconnected", () => console.warn("⚠️  MongoDB disconnected"));
 mongoose.connection.on("reconnected", () => console.log("✅ MongoDB reconnected"));
 
