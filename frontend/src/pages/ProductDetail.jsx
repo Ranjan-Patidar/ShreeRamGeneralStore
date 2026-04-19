@@ -142,8 +142,16 @@ const ProductDetail = () => {
 
       <div className="detail-container">
         {/* ---- Left: Product Visual ---- */}
-        <div className="detail-visual" style={{ background: product.cardColor }}>
-          <span className="detail-emoji">{product.emoji}</span>
+        <div className="detail-visual" style={{ background: product.image ? "var(--bg-card)" : product.cardColor }}>
+          {product.image && (product.image.startsWith("http") || product.image.startsWith("data:image")) ? (
+            <img
+              src={product.image}
+              alt={product.name}
+              className="detail-product-image"
+            />
+          ) : (
+            <span className="detail-emoji">{product.emoji}</span>
+          )}
           {discount > 0 && (
             <div className="detail-discount-badge">-{discount}% OFF</div>
           )}

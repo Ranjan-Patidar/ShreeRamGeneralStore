@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Context providers
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 // Layout components (shown on every page)
 import Navbar from "./components/Navbar";
@@ -53,68 +54,70 @@ function App() {
   return (
     // BrowserRouter enables URL-based navigation
     <BrowserRouter>
-      {/* AuthProvider: makes user/login/logout available to all components */}
-      <AuthProvider>
-        {/* CartProvider: makes cart available to all components */}
-        <CartProvider>
+      <ThemeProvider>
+        {/* AuthProvider: makes user/login/logout available to all components */}
+        <AuthProvider>
+          {/* CartProvider: makes cart available to all components */}
+          <CartProvider>
 
-          {/* Navbar is shown on ALL pages */}
-          <Navbar />
+            {/* Navbar is shown on ALL pages */}
+            <Navbar />
 
-          {/* Main content area — changes based on current URL */}
-          <main className="main-content">
-            <Routes>
-              {/* ---- Public Routes (anyone can visit) ---- */}
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
+            {/* Main content area — changes based on current URL */}
+            <main className="main-content">
+              <Routes>
+                {/* ---- Public Routes (anyone can visit) ---- */}
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
 
-              {/* ---- Protected Routes (login required) ---- */}
-              <Route path="/cart" element={
-                <ProtectedRoute><Cart /></ProtectedRoute>
-              } />
-              <Route path="/wishlist" element={
-                <ProtectedRoute><Wishlist /></ProtectedRoute>
-              } />
-              <Route path="/checkout" element={
-                <ProtectedRoute><Checkout /></ProtectedRoute>
-              } />
-              <Route path="/orders" element={
-                <ProtectedRoute><OrderHistory /></ProtectedRoute>
-              } />
+                {/* ---- Protected Routes (login required) ---- */}
+                <Route path="/cart" element={
+                  <ProtectedRoute><Cart /></ProtectedRoute>
+                } />
+                <Route path="/wishlist" element={
+                  <ProtectedRoute><Wishlist /></ProtectedRoute>
+                } />
+                <Route path="/checkout" element={
+                  <ProtectedRoute><Checkout /></ProtectedRoute>
+                } />
+                <Route path="/orders" element={
+                  <ProtectedRoute><OrderHistory /></ProtectedRoute>
+                } />
 
-              {/* ---- Admin Routes (protected + admin only) ---- */}
-              <Route path="/admin/dashboard" element={
-                <AdminRoute><AdminDashboard /></AdminRoute>
-              } />
-              <Route path="/admin/products" element={
-                <AdminRoute><AdminProductList /></AdminRoute>
-              } />
-              <Route path="/admin/products/new" element={
-                <AdminRoute><AdminProductForm /></AdminRoute>
-              } />
-              <Route path="/admin/products/edit/:id" element={
-                <AdminRoute><AdminProductForm /></AdminRoute>
-              } />
-              <Route path="/admin/orders" element={
-                <AdminRoute><AdminOrderList /></AdminRoute>
-              } />
-              <Route path="/admin/users" element={
-                <AdminRoute><AdminUsersList /></AdminRoute>
-              } />
+                {/* ---- Admin Routes (protected + admin only) ---- */}
+                <Route path="/admin/dashboard" element={
+                  <AdminRoute><AdminDashboard /></AdminRoute>
+                } />
+                <Route path="/admin/products" element={
+                  <AdminRoute><AdminProductList /></AdminRoute>
+                } />
+                <Route path="/admin/products/new" element={
+                  <AdminRoute><AdminProductForm /></AdminRoute>
+                } />
+                <Route path="/admin/products/edit/:id" element={
+                  <AdminRoute><AdminProductForm /></AdminRoute>
+                } />
+                <Route path="/admin/orders" element={
+                  <AdminRoute><AdminOrderList /></AdminRoute>
+                } />
+                <Route path="/admin/users" element={
+                  <AdminRoute><AdminUsersList /></AdminRoute>
+                } />
 
-              {/* ---- 404 Fallback ---- */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
+                {/* ---- 404 Fallback ---- */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
 
-          {/* Footer is shown on ALL pages */}
-          <Footer />
+            {/* Footer is shown on ALL pages */}
+            <Footer />
 
-        </CartProvider>
-      </AuthProvider>
+          </CartProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

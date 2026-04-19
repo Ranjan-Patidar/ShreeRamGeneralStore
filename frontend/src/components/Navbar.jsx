@@ -8,10 +8,12 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { useTheme } from "../context/ThemeContext";
 
 const Navbar = () => {
   const { user, logout, isLoggedIn } = useAuth();
   const { cartCount } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation(); // current page path
 
@@ -94,6 +96,16 @@ const Navbar = () => {
 
         {/* ---- RIGHT SIDE: Cart + User ---- */}
         <div className="navbar-actions">
+
+          {/* Theme toggle — sun for dark mode, moon for light mode */}
+          <button
+            className="theme-toggle-btn"
+            onClick={toggleTheme}
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            title={theme === "dark" ? "Light mode" : "Dark mode"}
+          >
+            {theme === "dark" ? "☀️" : "🌙"}
+          </button>
 
           {/* Cart Icon with item badge */}
           <Link to="/cart" className="cart-btn" aria-label="Cart">

@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import ProductCard from "../components/ProductCard";
 import MyShopBg from "../assets/MyShop7.png";
+import { useTheme } from "../context/ThemeContext";
 
 // All 8 product categories with their icons and colors
 const CATEGORIES = [
@@ -25,6 +26,7 @@ const CATEGORIES = [
 
 const Home = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
@@ -71,7 +73,9 @@ const Home = () => {
     <div
       className="home-page"
       style={{
-        backgroundImage: `linear-gradient(rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 0.85)), url(${MyShopBg})`,
+        backgroundImage: theme === "dark"
+          ? `linear-gradient(rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 0.85)), url(${MyShopBg})`
+          : `linear-gradient(rgba(240, 240, 255, 0.35), rgba(240, 240, 255, 0.75)), url(${MyShopBg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
